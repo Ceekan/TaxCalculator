@@ -1,0 +1,45 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Tax Calculator";
+}
+
+<h4>Tax Calculator</h4>
+<hr />
+<div class="alert-display">
+    <div class="alert alert-primary fade show" role="alert">
+        <div id="alertMessage"></div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <form id="taxForm">
+            <div class="form-group">
+                <label for="annualIncomeInpt" class="control-label">Annual Income</label>
+                <input id="annualIncomeInpt" name="annualIncomeInpt" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label for="postalCodeDrpdown" class="control-label"></label>
+                <select id="postalCodeDrpdown" class="form-control"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" id="submitBtn" value="Submit" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+@section CustomScripts {
+    <script src="~/js/tax-calculator.min.js" asp-append-version="true"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            Tax.Calculator.View = new Tax.Calculator.Form();
+            Tax.Calculator.View.Init();
+        });
+    </script>
+} 
