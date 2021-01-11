@@ -39,6 +39,8 @@ Step 1
 ```bash
 dotnet run -p ./TaxCalculator.API
 ```
+**NOTE:** This will automatically seed and pre-populate the PostalCode table with data, if the PostalCode table is empty. 
+
 Step 2
 - Start the **TaxCalculator.UI** by either running Ctrl+F5 (Start Without Debugging) or via the Command Prompt within the TaxCalculator folder.
   - The UI will now be listening on: https://localhost:5002
