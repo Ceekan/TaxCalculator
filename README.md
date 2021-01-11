@@ -34,6 +34,7 @@ Step 2
 Step 1
 - Start the **TaxCalculator.API** by either running Ctrl+F5 (Start Without Debugging) or via the Command Prompt within the TaxCalculator folder.
   - The API will now be listening on: https://localhost:5001
+  - The swagger page is available on: https://localhost:5001/swagger/index.html
 
 ```bash
 dotnet run -p ./TaxCalculator.API
