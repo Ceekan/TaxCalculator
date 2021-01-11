@@ -13,7 +13,7 @@ The application uses Visual Studio 2019 and .NET Core 5.0
 ## Initial Setup
 
 Step 1
-- Create the TaxCalculatorDB database in SQL Server 2016 and above.
+- Create the **TaxCalculatorDB** database in SQL Server 2016 and above.
   - Server name is (localdb)\mssqllocaldb
   - For convenience the TaxCalculatorDB Database Create Script is located in the MSSQL\Scripts folder.
   - This also includes the TaxCalculatorDB Table Scripts.
@@ -25,25 +25,25 @@ Step 1
   - The path can be changed within the TaxCalculatorDB Database Create Script which is located in the MSSQL\Scripts folder.
 
 Step 2
-- Open the TaxCalculator.sln within Visual Studio 2019
-- Build the TaxCalculator solutin once the NuGet Packages are restored.
+- Open the **TaxCalculator.sln** within Visual Studio 2019
+- Build the TaxCalculator solution once the NuGet Packages are restored.
   - This will automatically begin processing bundleconfig.json file.
 
 ## Project Execution
 
 Step 1
-- Start the TaxCalculator.API by either running Ctrl+F5 (Start Without Debugging) or via the Command Prompt within the TaxCalculator solution folder.
+- Start the **TaxCalculator.API** by either running Ctrl+F5 (Start Without Debugging) or via the Command Prompt within the TaxCalculator folder.
   - The API will now be listening on: https://localhost:5001
 
 ```bash
 dotnet run -p ./TaxCalculator.API
 ```
 Step 2
-- Start the TaxCalculator.UI by either running Ctrl+F5 (Start Without Debugging) or via the Command Prompt within the TaxCalculator solution folder.
+- Start the **TaxCalculator.UI** by either running Ctrl+F5 (Start Without Debugging) or via the Command Prompt within the TaxCalculator folder.
   - The UI will now be listening on: https://localhost:5002
   
 ```bash
 dotnet run -p ./TaxCalculator.UI
 ```
 
-- TaxCalculator.Tests and TaxCalculator.xUnit.Tests can be executed via the Test Explorer within Visual Studio 2019 (Test -> Test Explorer or Ctrl+E, T)
+- **TaxCalculator.Tests** and **TaxCalculator.xUnit.Tests** can be executed via the Test Explorer within Visual Studio 2019 (Test -> Test Explorer or Ctrl+E, T)
