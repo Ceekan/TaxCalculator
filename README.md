@@ -43,7 +43,7 @@ Step 2
   - The UI will now be listening on: https://localhost:5002
   
 ```bash
-dotnet run -p ./TaxCalculator.API
+dotnet run -p ./TaxCalculator.UI
 ```
 
 - TaxCalculator.Tests and TaxCalculator.xUnit.Tests can be executed via the Test Explorer within Visual Studio 2019 (Test -> Test Explorer or Ctrl+E, T)
