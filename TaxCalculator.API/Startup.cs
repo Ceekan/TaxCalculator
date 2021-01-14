@@ -1,20 +1,14 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 using TaxCalculator.API.Data;
-using TaxCalculator.API.Logic;
+using TaxCalculator.API.Logic.Manager;
+using TaxCalculator.API.Repository;
 
 namespace TaxCalculator.API
 {
@@ -51,7 +45,9 @@ namespace TaxCalculator.API
                 configuration.SwaggerDoc("v1", new OpenApiInfo { Title = $"{Assembly.GetExecutingAssembly().GetName().Name}", Version = "v1" });
             });
 
-            services.AddScoped<ITaxManager, TaxManager>();
+            services.AddTransient(typeof(IEntityRepository<>), typeof(EntityRepository<>));
+            services.AddTransient<IPostalCodeManager, PostalCodeManager>();
+            services.AddTransient<ITaxManager, TaxManager>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

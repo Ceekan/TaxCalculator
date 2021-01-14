@@ -1,16 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Moq;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using TaxCalculator.API.Data;
 using TaxCalculator.API.Data.Models;
-using TaxCalculator.API.Logic;
+using TaxCalculator.API.Logic.Manager;
+using TaxCalculator.API.Repository;
 
 namespace TaxCalculator.Tests.UnitTests
 {
@@ -66,18 +64,22 @@ namespace TaxCalculator.Tests.UnitTests
         [Test]
         public async Task Logic_TaxManager_GetPostalCodes()
         {
-            //Arrange
+            // Arrange
             var mockSet = TaxCalculatorDBContextMock.GetMockDbSet(postalCodes);
 
-            var mockContext = new Mock<TaxCalculatorDBContext>();
-            mockContext.Setup(c => c.PostalCodes).Returns(mockSet.Object);
+            var contextOptions = new DbContextOptions<TaxCalculatorDBContext>();
 
-            var service = new TaxManager(mockContext.Object);
+            var mockContext = new Mock<TaxCalculatorDBContext>(contextOptions);
+            mockContext.Setup(c => c.Set<PostalCode>()).Returns(mockSet.Object);
 
-            //Act
-            var result = await service.GetPostalCodes().ConfigureAwait(false);
+            var entityRepository = new EntityRepository<PostalCode>(mockContext.Object);
 
-            //Assert
+            var service = new PostalCodeManager(entityRepository);
+
+            // Act
+            var result = await service.GetPostalCodesAsync().ConfigureAwait(false);
+
+            // Assert
             Assert.IsNotNull(result);
             Assert.IsTrue(result.Count > 0);
             Assert.AreEqual(4, result.Count);
@@ -86,18 +88,22 @@ namespace TaxCalculator.Tests.UnitTests
         [Test]
         public async Task Logic_TaxManager_GetPostalCodeById()
         {
-            //Arrange
+            // Arrange
             var mockSet = TaxCalculatorDBContextMock.GetMockDbSet(postalCodes);
 
-            var mockContext = new Mock<TaxCalculatorDBContext>();
-            mockContext.Setup(c => c.PostalCodes).Returns(mockSet.Object);
+            var contextOptions = new DbContextOptions<TaxCalculatorDBContext>();
 
-            var service = new TaxManager(mockContext.Object);
+            var mockContext = new Mock<TaxCalculatorDBContext>(contextOptions);
+            mockContext.Setup(c => c.Set<PostalCode>()).Returns(mockSet.Object);
 
-            //Act
-            var result = await service.GetPostalCodeById(1).ConfigureAwait(false);
+            var entityRepository = new EntityRepository<PostalCode>(mockContext.Object);
 
-            //Assert
+            var service = new PostalCodeManager(entityRepository);
+
+            // Act
+            var result = await service.GetPostalCodeByIdAsync(1).ConfigureAwait(false);
+
+            // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(postalCodes[0].Id, result.Id);
         }
@@ -108,10 +114,13 @@ namespace TaxCalculator.Tests.UnitTests
             // Arrange
             var mockSet = TaxCalculatorDBContextMock.GetMockDbSet(taxes);
 
-            var mockContext = new Mock<TaxCalculatorDBContext>();
-            mockContext.Setup(c => c.Taxes).Returns(mockSet.Object);
+            var contextOptions = new DbContextOptions<TaxCalculatorDBContext>();
+            var mockContext = new Mock<TaxCalculatorDBContext>(contextOptions);
 
-            var service = new TaxManager(mockContext.Object);
+            mockContext.Setup(c => c.Set<Tax>()).Returns(mockSet.Object);
+
+            var entityRepository = new EntityRepository<Tax>(mockContext.Object);
+            var service = new TaxManager(entityRepository);
 
             var taxResult = new Tax()
             {
@@ -123,11 +132,13 @@ namespace TaxCalculator.Tests.UnitTests
             };
 
             // Act
-            await service.AddTaxResult(taxResult).ConfigureAwait(false);
+            await service.AddTaxResultAsync(taxResult).ConfigureAwait(false);
 
             // Assert
             mockContext.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
             mockSet.Verify(x => x.AddAsync(It.IsAny<Tax>(), It.IsAny<CancellationToken>()), Times.Once);
+
+            Assert.AreEqual(2, taxes.Count);
         }
     }
 }

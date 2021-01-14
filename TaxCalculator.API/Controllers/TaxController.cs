@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -7,7 +6,7 @@ using TaxCalculator.API.Data.Dto;
 using TaxCalculator.API.Data.Models;
 using TaxCalculator.API.Helpers;
 using TaxCalculator.API.Helpers.Constants;
-using TaxCalculator.API.Logic;
+using TaxCalculator.API.Logic.Manager;
 
 namespace TaxCalculator.API.Controllers
 {
@@ -15,10 +14,12 @@ namespace TaxCalculator.API.Controllers
     public class TaxController : ControllerBase
     {
         private readonly ITaxManager _taxManager;
+        private readonly IPostalCodeManager _postalCodeManager;
 
-        public TaxController(ITaxManager taxManager)
+        public TaxController(ITaxManager taxManager, IPostalCodeManager postalCodeManager)
         {
             _taxManager = taxManager;
+            _postalCodeManager = postalCodeManager;
         }
 
         /// <summary>
@@ -36,7 +37,7 @@ namespace TaxCalculator.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetPostalCodesAsync()
         {
-            var items = await _taxManager.GetPostalCodes().ConfigureAwait(false);
+            var items = await _postalCodeManager.GetPostalCodesAsync().ConfigureAwait(false);
 
             if (items == null || items.Count == 0)
                 return NotFound();
@@ -69,7 +70,7 @@ namespace TaxCalculator.API.Controllers
                     throw new ArgumentException($"Tax object not supplied.");
 
                 int postalCodeId = int.Parse(taxDto.PostalCodeId);
-                var postalCode = await _taxManager.GetPostalCodeById(postalCodeId).ConfigureAwait(false);
+                var postalCode = await _postalCodeManager.GetPostalCodeByIdAsync(postalCodeId).ConfigureAwait(false);
 
                 if (postalCode == null)
                     throw new ArgumentException($"Postal code not found.");
@@ -80,7 +81,7 @@ namespace TaxCalculator.API.Controllers
                 TaxCalculation taxCalculation = new TaxCalculation();
                 decimal calculatedTaxValue = TaxCalculationExtentions.GetTaxResult(taxCalculation, taxCalulationType, annualIncome);
 
-                await _taxManager.AddTaxResult(new Tax()
+                await _taxManager.AddTaxResultAsync(new Tax()
                     {
                         Id = Guid.NewGuid(),
                         AnnualIncome = annualIncome,

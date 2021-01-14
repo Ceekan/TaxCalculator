@@ -2,8 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using TaxCalculator.API.Controllers;
 using TaxCalculator.API.Data.Dto;
-using TaxCalculator.API.Data.Models;
-using TaxCalculator.API.Logic;
+using TaxCalculator.API.Logic.Manager;
 using Xunit;
 
 namespace TaxCalculator.Tests
@@ -11,12 +10,14 @@ namespace TaxCalculator.Tests
     public class TaxControllerTest
     {
         readonly TaxController _controller;
-        readonly TaxManagerMock _service;
+        readonly TaxManagerMock _taxManagerService;
+        readonly PostalCodeManagerMock _postalCodeService;
 
         public TaxControllerTest()
         {
-            _service = new TaxManagerMock();
-            _controller = new TaxController(_service);
+            _taxManagerService = new TaxManagerMock();
+            _postalCodeService = new PostalCodeManagerMock();
+            _controller = new TaxController(_taxManagerService, _postalCodeService);
         }
 
         [Fact]

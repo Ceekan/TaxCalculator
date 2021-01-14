@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TaxCalculator.API.Data.Models;
 
-namespace TaxCalculator.API.Logic
+namespace TaxCalculator.API.Logic.Manager
 {
-	public class TaxManagerMock : ITaxManager
+    public class PostalCodeManagerMock : IPostalCodeManager
 	{
         private readonly List<PostalCode> postalCodes;
 
-        private static readonly List<Tax> taxList = new List<Tax>();
-        private readonly List<Tax> taxes = taxList; 
-
-        public TaxManagerMock()
+        public PostalCodeManagerMock()
 		{
             postalCodes = new List<PostalCode>()
             {
@@ -44,13 +40,7 @@ namespace TaxCalculator.API.Logic
             };
         }
 
-        public Task AddTaxResult(Tax tax)
-        {
-            taxes.Add(tax);
-            return Task.FromResult(tax);
-        }
-
-        public Task<PostalCode> GetPostalCodeById(int postalCodeId)
+        public Task<PostalCode> GetPostalCodeByIdAsync(int postalCodeId)
         {
             var postalCode = postalCodes
                 .Where(x => x.Id == postalCodeId)
@@ -59,7 +49,7 @@ namespace TaxCalculator.API.Logic
             return Task.FromResult(postalCode);
         }
 
-        public Task<List<PostalCode>> GetPostalCodes()
+        public Task<List<PostalCode>> GetPostalCodesAsync()
         {
             return Task.FromResult(postalCodes);
         }

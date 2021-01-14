@@ -1,9 +1,9 @@
 ﻿using TaxCalculator.API.Data.Dto;
 using TaxCalculator.API.Data.Models;
 
-namespace TaxCalculator.API.Logic
+namespace TaxCalculator.API.Logic.Manager
 {
-    public static class TaxManagerConverter
+    public static class PostalCodeManagerConverter
 	{
 		public static PostalCodeDto ToDto(this PostalCode postalCode)
 		{
